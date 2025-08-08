@@ -9,6 +9,8 @@ target-version = ["py311"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
 # Conjunto útil: errores básicos (E,F), limpieza (I=isort), pyupgrade (UP), bugbear (B)
 select = ["E", "F", "I", "UP", "B"]
 ignore = []
