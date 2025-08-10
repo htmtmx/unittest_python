@@ -14,7 +14,12 @@ class CalculatorTest(unittest.TestCase):
         assert multiplication(3, 5) == 15
 
     def test_division_by_zero(self):
-        assert division(3, 0) == "Not allowed division by zero"
+        exception_raised = False
+        try:
+            division(3, 0)
+        except ZeroDivisionError:
+            exception_raised = True
+        assert exception_raised
 
     def test_division(self):
         assert division(20, 5) == 4
