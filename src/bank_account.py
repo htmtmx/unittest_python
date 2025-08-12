@@ -15,5 +15,8 @@ class BankAccount:
     def get_balance(self):
         return self.balance
 
-
-MyBankAccount = BankAccount(initial_balance=40)
+    def transfer(self, accountToTransfer, amountToTransfer):
+        if amountToTransfer > self.balance:
+            raise ValueError("Fondos insuficientes")
+        self.withdraw(amountToTransfer)
+        accountToTransfer.deposit(amountToTransfer)
