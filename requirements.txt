@@ -1,0 +1,5 @@
+black==25.1.0
+pre_commit==4.2.0
+ipdb==0.13.13
+pytest==8.4.1
+ruff==0.12.8
