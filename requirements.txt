@@ -3,3 +3,8 @@ pre_commit==4.2.0
 ipdb==0.13.13
 pytest==8.4.1
 ruff==0.12.8
+urllib3==2.5.0
+requests==2.32.4
+idna==3.10
+charset-normalizer==3.4.3
+certifi==2025.8.3
