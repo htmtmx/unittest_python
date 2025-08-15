@@ -13,6 +13,10 @@ class BankAccountTests(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.account.log_file):
             os.remove(self.account.log_file)
+            
+    def _count_lines(self, filename):
+        with open(filename, 'r') as f:
+            return len(f.readlines())
 
     def test_deposit(self):
         new_balance = self.account.deposit(500)
@@ -37,3 +41,10 @@ class BankAccountTests(unittest.TestCase):
     def test_transaction_log(self):
         self.account.deposit(3500)
         self.assertTrue(os.path.exists('bank_account.txt'))
+
+    def test_count_transactions(self):
+        self.assertEqual(self._count_lines('bank_account.txt'), 1)
+        self.account.deposit(3500)
+        self.assertEqual(self._count_lines('bank_account.txt'), 2)
+        self.account.withdraw(1000)
+        self.assertEqual(self._count_lines('bank_account.txt'), 3)
