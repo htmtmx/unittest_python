@@ -1,13 +1,15 @@
 import requests
+import ipdb
 
 def get_location(ip=None):
     url = f'https://freeipapi.com/api/json/{ip}'
     response = requests.get(url)
     response.raise_for_status()
     data =  response.json()
+    ipdb.set_trace()
     return {
-        "country": data["countryName"],
-        "region": data["regionName"],
+        "countryName": data["countryName"],
+        "regionName": data["regionName"],
         "capital": data["capital"],
         "cityName": data["cityName"],
     }
