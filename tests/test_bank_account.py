@@ -3,7 +3,11 @@ import unittest
 from unittest.mock import patch
 
 from src.bank_account import BankAccount
-from src.exceptions import WithdrawalOutsideBusinessDaysError, WithdrawalOutsideBusinessHoursError
+from src.exceptions import (
+    InsufficientFundsError,
+    WithdrawalOutsideBusinessDaysError,
+    WithdrawalOutsideBusinessHoursError,
+)
 
 SERVER = "server_a"
 
@@ -25,6 +29,10 @@ class BankAccountTests(unittest.TestCase):
     def test_deposit(self):
         new_balance = self.account.deposit(500)
         self.assertEqual(new_balance, 1500)
+
+    def test_deposit_not_allowed_negative_ammount(self):
+        with self.assertRaises(ValueError):
+            self.account.deposit(-1900)
 
     @patch("src.bank_account.datetime")
     def test_withdraw(self, mock_datetime):
@@ -66,6 +74,13 @@ class BankAccountTests(unittest.TestCase):
         mock_datetime.now.return_value.weekday = 6
         with self.assertRaises(WithdrawalOutsideBusinessDaysError):
             self.account.withdraw(300)
+
+    @patch("src.bank_account.datetime")
+    def test_withdraw_ammount_bigger_than_balance(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 11
+        mock_datetime.now.return_value.weekday = 4
+        with self.assertRaises(InsufficientFundsError):
+            self.account.withdraw(5000)
 
     def test_get_balance(self):
         self.assertEqual(self.account.get_balance(), 1000)

@@ -24,6 +24,7 @@ class BankAccount:
             self._log_transaction(f"Deposito de {amount} realizado")
         else:
             self._log_transaction(f"Deposito de {amount} fallido: Monto no positivo")
+            raise ValueError("Montos negativo invalido")
         return self.balance
 
     def withdraw(self, amount):
