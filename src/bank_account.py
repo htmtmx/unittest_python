@@ -1,3 +1,5 @@
+import datetime
+
 from src.exceptions import InsufficientFundsError, WithdrawalOutsideBusinessHoursError
 
 
@@ -20,8 +22,9 @@ class BankAccount:
             self._log_transaction(f"Deposito de {amount} fallido: Monto no positivo")
         return self.balance
 
-    def withdraw(self, amount, hour_to_withdraw):
-        if hour_to_withdraw < 9 or hour_to_withdraw > 17:
+    def withdraw(self, amount):
+        now = datetime.now()
+        if now.hour < 9 or now.hour > 17:
             self._log_transaction(f"Retiro de {amount} fallido: Fuera del horario permitido")
             raise WithdrawalOutsideBusinessHoursError("Retiro fuera del horario permitido")
         elif amount <= self.balance and amount > 0:
@@ -36,12 +39,12 @@ class BankAccount:
         self._log_transaction(f"Saldo actual: {self.balance}")
         return self.balance
 
-    def transfer(self, accountToTransfer, amountToTransfer, hour_to_transfer):
+    def transfer(self, accountToTransfer, amountToTransfer):
         if amountToTransfer > self.balance:
             self._log_transaction(
                 f"Transferencia de {amountToTransfer} fallida: Fondos insuficientes"
             )
             raise ValueError("Fondos insuficientes")
-        self.withdraw(amountToTransfer, hour_to_withdraw=hour_to_transfer)
+        self.withdraw(amountToTransfer)
         self._log_transaction(f"Transferencia de {amountToTransfer} realizada exitosamente")
         accountToTransfer.deposit(amountToTransfer)
