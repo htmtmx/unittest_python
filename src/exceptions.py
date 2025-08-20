@@ -4,3 +4,7 @@ class InsufficientFundsError(Exception):
 
 class WithdrawalOutsideBusinessHoursError(Exception):
     pass
+
+
+class WithdrawalOutsideBusinessDaysError(Exception):
+    pass

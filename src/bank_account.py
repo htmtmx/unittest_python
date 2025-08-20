@@ -1,6 +1,10 @@
 import datetime
 
-from src.exceptions import InsufficientFundsError, WithdrawalOutsideBusinessHoursError
+from src.exceptions import (
+    InsufficientFundsError,
+    WithdrawalOutsideBusinessDaysError,
+    WithdrawalOutsideBusinessHoursError,
+)
 
 
 class BankAccount:
@@ -24,7 +28,14 @@ class BankAccount:
 
     def withdraw(self, amount):
         now = datetime.now()
-        if now.hour < 9 or now.hour > 17:
+        if now.weekday >= 6:
+            self._log_transaction(
+                f"Retiro de {amount} fallido: Los fines de semana no se permiten retiros"
+            )
+            raise WithdrawalOutsideBusinessDaysError(
+                "Los retiros no están permitidos los fines de semana"
+            )
+        elif now.hour < 9 or now.hour > 17:
             self._log_transaction(f"Retiro de {amount} fallido: Fuera del horario permitido")
             raise WithdrawalOutsideBusinessHoursError("Retiro fuera del horario permitido")
         elif amount <= self.balance and amount > 0:
