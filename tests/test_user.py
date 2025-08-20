@@ -10,8 +10,17 @@ from src.user import User
 class UserTests(unittest.TestCase):
 
     def setUp(self):
+        custom_names = [
+            "Cliente A",
+            "Cliente B",
+            "Cliente C",
+            "Cliente D",
+            "Cliente E",
+            "Cliente F",
+        ]
         self.faker = Faker(locale="es")
-        self.user = User(name=self.faker.name(), email=self.faker.email())
+        # self.user = User(name=self.faker.name(), email=self.faker.email())
+        self.user = User(name=self.faker.random_elements(custom_names), email=self.faker.email())
 
     def tearDown(self):
         for account in self.user.accounts:
@@ -47,7 +56,7 @@ class UserTests(unittest.TestCase):
                 log_file=self.faker.file_name(extension="txt"),
             )
             self.user.add_account(bank_account)
-
+        print(self.user.name)
         expected_value = self.user.get_total_balance()
         value = sum(account.balance for account in self.user.accounts)
         self.assertEqual(value, expected_value)
