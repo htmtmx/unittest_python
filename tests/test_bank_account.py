@@ -107,3 +107,15 @@ class BankAccountTests(unittest.TestCase):
     @unittest.expectedFailure
     def test_expected_failure(self):
         self.assertEqual(self.account.get_balance(), 500)
+
+    def test_deposit_various_ammounts(self):
+        test_cases = [
+            {"ammount": 100, "expected": 1100},
+            {"ammount": 3000, "expected": 4000},
+            {"ammount": 4500, "expected": 5500},
+        ]
+        for case in test_cases:
+            with self.subTest(case):
+                self.account = BankAccount(initial_balance=1000, log_file="bank_account.txt")
+                new_balance = self.account.deposit(case["ammount"])
+                self.assertEqual(new_balance, case["expected"])
